@@ -14,8 +14,28 @@ including installing and configuring components as well as any code that you wri
     Each square has starting value of 1-9, numbered in order.
 
 2. Make component interactive, in App.jsx
-    Import { useState } react function; want square to "remember" that it got clicked so it can change to 'X'
+    Import { useState } react function; want square to "remember" that it got clicked so its display can change accordingly.
     useState allows Square to remember and update data over time.
-    Instead of having {value} as a Square prop, set 'value' and 'setValue' to the return value of useState.
-    Use setValue function to display 'X' when Square is clicked.
-    Add handleClick() function inside Square() to setValue() to 'X' when clicked.
+    Inside main App function, set 'squares' and 'setSquares' to the return value of useState.
+        Handles states for all 9 Squares.
+        Array(9).fill(null) sets default square values to null.
+        This way we can control all the states from the main App function.
+    When button clicked, onSquareClick, a Square prop, calls the handleClick function, which updates the square value to X or O by calling setSquares.
+        This is done by making a copy, since .
+    This re-renders the updated components.
+    To avoid an infinite function call loop, make sure the function is called as an arrow function.
+
+    3. Allow players to take turns with Xs and Os, in App.jsx
+        Track the turn of the player by adding another state, xIsNext. 
+        Boolean value toggles each time a player makes a move; inside handleClick().
+        Make sure only squares that have not been clicked yet can be clicked.
+            Have handleClick return early if already clicked.
+    
+    4. Winner detection
+        Create helper function calculateWinner().
+        Takes in array with 9 element, checks to see if X, O or null is the winner.
+        In handleClick, return early if the square is filled OR if there is a winner.
+        Once game over, display text to indicate winner by adding a status section. 
+            If there is a winner detected, write out the winner.
+            Else, indicate the next player's turn.
+            Insert status inside a <div> tag at the top of the tic tac toe board.
