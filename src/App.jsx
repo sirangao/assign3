@@ -1,13 +1,55 @@
 import * as React from 'react'
 import * as ReactBootstrap from 'react-bootstrap'
+import { useState } from 'react'
 
 const { Badge, Button, Card } = ReactBootstrap
 
 export default function App() {
   const [name, setName] = React.useState('World')
+  const [squares, setSquares] = React.useState(Array(9).fill(null))
 
   return (
-    <div className="container py-4">
+    <>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+    </>
+  )
+}
+
+function Square(){
+  const [value, setValue] = React.useState(null)
+
+  function handleClick(){
+    setValue('X');
+  }
+
+  return (
+    <button 
+      className="square"
+      onClick={handleClick}
+    >
+        {value}
+    </button>);
+}
+
+
+/*
+<div className="container py-4">
       <Card className="starter-card shadow-sm">
         <Card.Body className="p-4">
           <h1 className="greeting display-6 fw-bold">Hello, {name}!</h1>
@@ -27,5 +69,4 @@ export default function App() {
         </Card.Body>
       </Card>
     </div>
-  )
-}
+*/

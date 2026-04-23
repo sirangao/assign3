@@ -1,0 +1,21 @@
+As you go, keep a log in the file tic-tac-toe.txt of what you have done so that you can reproduce the results later. 
+This should not merely be a transcript of what you typed: it should be more like a true lab notebook, 
+in which you briefly note down what you did and what happened. Write down every significant action that you take, 
+including installing and configuring components as well as any code that you write.
+
+1. Set up tic tac toe 3x3 grid in App.jsx
+    Define a Square component for each grid of the tic tac toe board.
+        The function Square() returns a JSX button that displays either X or O when clicked.
+        Button element given className='square' for CSS formatting.
+        Add parameter to Square function for its grid location, access its value using curly braces: {value}
+        To pass values to the 'value' prop: <Square value='1' />
+    This prevents repetition of the same code 9 times for each square of the grid.
+    In main app function, return 9 Squares in 3 rows of 3, where every 3 Squares are separated by <div className="board-row"> to format a row of 3.
+    Each square has starting value of 1-9, numbered in order.
+
+2. Make component interactive, in App.jsx
+    Import { useState } react function; want square to "remember" that it got clicked so it can change to 'X'
+    useState allows Square to remember and update data over time.
+    Instead of having {value} as a Square prop, set 'value' and 'setValue' to the return value of useState.
+    Use setValue function to display 'X' when Square is clicked.
+    Add handleClick() function inside Square() to setValue() to 'X' when clicked.
