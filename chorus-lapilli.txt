@@ -1,0 +1,16 @@
+notes:
+
+counter of up to 3 pieces per player
+detect if current player has a piece in center
+two clicks: first click selects piece to move, second selects destination
+check if clicks are valid
+    first has to contain current player's symbol
+    second has to be empty AND adjacent
+        need to make sure this is even possible
+
+check adjacent
+    index % 3 = col
+    index / 3 = row
+    abs(row dist) & abs(col dist) <= 1
+    cannot move to same spot
+    return bool

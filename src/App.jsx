@@ -8,20 +8,65 @@ export default function App() {
   const [name, setName] = React.useState('World')
   const [squares, setSquares] = React.useState(Array(9).fill(null))
   const [xIsNext, setXIsNext] = React.useState(true);
+  const [numPieces, setNumPieces] = React.useState(0);
+  //const [clickCount, setClickCount] = React.useState(0);
+  const [source, setSource] = React.useState(null); // holds index
 
   function handleClick(i){
-    if(squares[i] || calculateWinner(squares))
+    if(calculateWinner(squares))
       return;
 
+    console.log('source value = ' + source)
+
     const nextSquares = squares.slice();
-    if(xIsNext){
-      nextSquares[i] = 'X';
+    if(numPieces < 6){
+      console.log('less than 6 pieces on board')
+      if(squares[i])
+        return;
+      if(xIsNext){
+        nextSquares[i] = 'X';
+      }
+      else{
+        nextSquares[i] = 'O';
+      }
+      setSquares(nextSquares);
+      setXIsNext(!xIsNext);
+      setNumPieces(numPieces+1);
     }
     else{
-      nextSquares[i] = 'O';
+      console.log('greater than 6 pieces on board')
+      if(source){ // already clicked source square
+        console.log('select dest square')
+        if(squares[i] || !isAdjacentSquare(source, i)){
+          console.log('dest square NOT empty or NOT adjacent, need to try again')
+          return;
+        }
+        nextSquares[source] = null;
+        nextSquares[i] = (xIsNext ? 'X' : 'O');
+        setSource(null);
+        setSquares(nextSquares);
+        console.log('successfully moved game piece')
+
+        setXIsNext(!xIsNext);
+        setNumPieces(numPieces+1);
+      }
+      else{ // current click is soruce square
+        console.log('select source square')
+        if(squares[i] == (xIsNext ? 'X' : 'O') && isPossibleMove(i, squares)){ // makes sure square contains player's matching symbol
+          setSource(i);
+          console.log('valid source square selected')
+        }
+        else{ // if not, ignore click
+          console.log('invalid source square selected, need to try again')
+          return;
+        }
+      }
+      ///setClickCount(clickCount+1);
     }
-    setXIsNext(!xIsNext);
-    setSquares(nextSquares);
+    
+    
+
+    console.log('////==============================')
   }
 
   const winner = calculateWinner(squares);
@@ -65,6 +110,7 @@ function Square({value, onSquareClick}) {
 }
 
 function calculateWinner(squares){
+  console.log('check for winner...')
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -82,6 +128,28 @@ function calculateWinner(squares){
     }
   }
   return null;
+}
+
+function isAdjacentSquare(source, dest){
+  const sRow = Math.floor(source / 3);
+  const sCol = source % 3;
+  const dRow = Math.floor(dest / 3);
+  const dCol = dest % 3;
+
+  if(sRow == dRow && sCol == dCol)
+    return false;
+
+  return (Math.abs(sRow-dRow) <= 1 && Math.abs(sCol-dCol) <= 1);
+}
+
+function isPossibleMove(source, squares){
+  for(let i = 0; i<9; i++){
+    if(isAdjacentSquare(source, i)){
+      if(!squares[i]) // empty
+        return true;
+    }
+  }
+  return false;
 }
 
 /*
