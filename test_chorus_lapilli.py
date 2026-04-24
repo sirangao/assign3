@@ -180,7 +180,6 @@ class TestChorusLapilli(unittest.TestCase):
     def test_fourth_move(self):
         '''check that after 3 moves each, you can't place new pieces down, you have to move existing'''
         tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
-        # X at 0,2,6 — O at 1,3,5 — no winner
         tiles[0].click()
         tiles[1].click()
         tiles[2].click()
