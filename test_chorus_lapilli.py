@@ -155,6 +155,47 @@ class TestChorusLapilli(unittest.TestCase):
         tiles[0].click()
         self.assertTileIs(tiles[0], self.SYMBOL_X)
 
+    def test_no_more_moves_once_win(self):
+        '''check to make sure app prevents additional moves once there has been a winner'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()                                                                                                                                   
+        tiles[1].click()
+        tiles[3].click()
+        tiles[4].click()
+        tiles[6].click() # x wins
+        tiles[7].click() # should not be able to make anymore moves
+        self.assertTileIs(tiles[7], self.SYMBOL_BLANK)
+
+    def test_place_empty_square(self):
+        '''check that you shoudl not be able to place a game piece in a non empty spot'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        tiles[1].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_O)
+        tiles[1].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_O) # cannot place in non empty space
+
+
+    def test_fourth_move(self):
+        '''check that after 3 moves each, you can't place new pieces down, you have to move existing'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        # X at 0,2,6 — O at 1,3,5 — no winner
+        tiles[0].click()
+        tiles[1].click()
+        tiles[2].click()
+        tiles[5].click()
+        tiles[4].click()
+        tiles[3].click()
+
+        tiles[6].click() # no new game piece generated
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+        tiles[4].click() # no move after first click
+        self.assertTileIs(tiles[4], self.SYMBOL_X)
+        tiles[7].click() # moves X fromm index 4 to 7 after second click
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[7], self.SYMBOL_X)
+
 
 # ================= [DO NOT MAKE ANY CHANGES BELOW THIS LINE] =================
 

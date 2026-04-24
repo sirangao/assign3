@@ -11,6 +11,8 @@ export default function App() {
   const [numPieces, setNumPieces] = React.useState(0);
   //const [clickCount, setClickCount] = React.useState(0);
   const [source, setSource] = React.useState(null); // holds index
+  let invalid = false;
+  let inCenter = false;
 
   function handleClick(i){
     if(calculateWinner(squares))
@@ -33,39 +35,60 @@ export default function App() {
       setXIsNext(!xIsNext);
       setNumPieces(numPieces+1);
     }
-    else{
+    else{ // each player has three pieces
       console.log('greater than 6 pieces on board')
-      if(source){ // already clicked source square
-        console.log('select dest square')
-        if(squares[i] || !isAdjacentSquare(source, i)){
-          console.log('dest square NOT empty or NOT adjacent, need to try again')
-          return;
-        }
+      if(source !== null){ // already clicked source square
         nextSquares[source] = null;
         nextSquares[i] = (xIsNext ? 'X' : 'O');
+
+        console.log('select dest square')
+        if((squares[i] || !isAdjacentSquare(source, i)) || 
+            (squares[4] == (xIsNext ? 'X' : 'O') && source!=4 && calculateWinner(nextSquares) != (xIsNext ? 'X' : 'O')) ){ // if invalid after 2 clicks, reset
+
+          console.log('dest square NOT empty or NOT adjacent, need to try again')
+          // invalid = false;
+          setSource(null);
+          return;
+        }
+        
         setSource(null);
         setSquares(nextSquares);
+
+        // if(inCenter && i!=4 && calculateWinner(nextSquares) != (xIsNext ? 'X' : 'O')){ // invalid center move
+        //   // invalid = false;
+        //   setSource(null);
+        //   return;
+        // }
+
         console.log('successfully moved game piece')
 
+        // inCenter = false;
         setXIsNext(!xIsNext);
         setNumPieces(numPieces+1);
       }
       else{ // current click is soruce square
         console.log('select source square')
-        if(squares[i] == (xIsNext ? 'X' : 'O') && isPossibleMove(i, squares)){ // makes sure square contains player's matching symbol
+
+        // setSource(i);
+
+        // if(squares[4] == (xIsNext ? 'X' : 'O')) { // center piece
+        //   inCenter = true; // need to reset for each player
+        // }
+        
+        if((squares[i] == (xIsNext ? 'X' : 'O') && isPossibleMove(i, squares))){ // makes sure square contains player's matching symbol
           setSource(i);
-          console.log('valid source square selected')
+          //console.log('valid source square selected')
+          // invalid = true;
         }
         else{ // if not, ignore click
-          console.log('invalid source square selected, need to try again')
+          //console.log('invalid source square selected, need to try again')
+          // invalid = true;
           return;
         }
       }
-      ///setClickCount(clickCount+1);
     }
     
     
-
     console.log('////==============================')
   }
 
