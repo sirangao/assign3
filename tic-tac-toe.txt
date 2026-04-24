@@ -1,8 +1,3 @@
-As you go, keep a log in the file tic-tac-toe.txt of what you have done so that you can reproduce the results later. 
-This should not merely be a transcript of what you typed: it should be more like a true lab notebook, 
-in which you briefly note down what you did and what happened. Write down every significant action that you take, 
-including installing and configuring components as well as any code that you write.
-
 1. Set up tic tac toe 3x3 grid in App.jsx
     Define a Square component for each grid of the tic tac toe board.
         The function Square() returns a JSX button that displays either X or O when clicked.

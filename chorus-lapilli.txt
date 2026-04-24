@@ -1,16 +1,39 @@
-notes:
+In App.jsx
+1. track number of moves made
+    If number of moves is within 6, the game behaves like normal tic tac toe
+    Add new state variable numPieces to keep track of this; initalize to 0.
+    Every time a move is successfully made, increment numPieces value by 1.
+    If number of moves is greater than 6, switch to rules of chorus lapilli.
 
-counter of up to 3 pieces per player
-detect if current player has a piece in center
-two clicks: first click selects piece to move, second selects destination
-check if clicks are valid
-    first has to contain current player's symbol
-    second has to be empty AND adjacent
-        need to make sure this is even possible
+2. Normal tic tac toe -> Chorus lapilli
+    Split handleClick() into two parts:
+        If number of moves is within 6, the game behaves like normal tic tac toe.
+        Else if number of moves is greater than 6, implement logic for two clicks:
+            First click is source square, second click is destination square.
+            Add new state variable source with useState to indicate index of source square; default is null for no source/invalid source.
 
-check adjacent
-    index % 3 = col
-    index / 3 = row
-    abs(row dist) & abs(col dist) <= 1
-    cannot move to same spot
-    return bool
+3. Helper function: isAdjacentSquare()
+    Two parameters: source index and destination index.
+    Check if destination square is adjacent to the source square.
+    Convert 0-9 indices into the corresponding 3x3 2D array index.
+    Use aboslute value function to check if distance between two squares is within 1
+    If so, return true. 
+    Else, return false for invalid destination square. 
+
+4. Helper function: isPossibleMove()
+    Two parameters: source index, squares array of entire grid
+    Checks to make sure the selected source square has actual, valid adjacent squares that it can move into.
+    Loop through all 9 squares, use isAdjacentSquare() function to check if any adjacent squares are empty.
+    If there are no empty adjacent squares, the source square is not valid; return false.
+    Else, source square is valid, return true.
+
+5. First & Second Click logic
+    On first click: 
+        If source square matches the player's symbol and there are possible adjacent moves, setSource(i).
+        Else, invalid source, return. 
+    On second click:
+        Move game piece from source to dest in nextSquares array copy. 
+        If invalid (either source or dest invalid, center is occupied but wasn't selected as the source, or the player does not win)
+        then setSource(null) and return.
+        Else, update squares array to updated copy, nextSquares.
+        Change xIsNext for next player.
